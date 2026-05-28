@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <cctype>
 
 enum class CommandType { LOAD, SELECT, INSERT, EXIT, UNKNOWN };
 
@@ -16,7 +17,9 @@ struct Command {
 };
 
 inline static std::string to_upper(std::string s) {
-    std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+    std::transform(s.begin(), s.end(), s.begin(), [](unsigned char ch) {
+        return static_cast<char>(std::toupper(ch));
+    });
     return s;
 }
 
