@@ -44,3 +44,53 @@ SELECT * FROM table_name WHERE condition
 - Additional operators (sorting, grouping, aggregation)
 - Better error reporting and query validation
 - Support for multiple table joins
+
+## Example Session
+
+A typical interactive session with the mini database might look like this:
+
+1. Load a CSV file as a table:
+
+   ```text
+   LOAD students.csv
+   -> Loaded table "students" with 100 rows.
+   ```
+
+2. Insert a new record:
+
+   ```text
+   INSERT INTO students VALUES ("CS351", "Alice", 95)
+   -> 1 row inserted into "students".
+   ```
+
+3. Query the table:
+
+   ```text
+   SELECT * FROM students WHERE score >= 90
+   -> Returned all students with scores 90 and above.
+   ```
+
+These examples illustrate how the engine reads CSV data into memory and applies simple SQL-like commands to interact with it.
+
+## Technical Highlights
+
+Key technical ideas in this project include:
+
+- Designing an in-memory table structure to represent CSV rows and columns.
+- Implementing a minimal command parser to handle `LOAD`, `INSERT`, and `SELECT` operations.
+- Organizing the code in a modular way so that future extensions (such as sorting, aggregation, or joins) can be added without rewriting the core.
+
+## Development History
+
+The project evolved step by step:
+
+- Started with basic CSV parsing and in-memory storage of rows.
+- Added support for commands to load tables and insert new records.
+- Implemented a simple SELECT mechanism for filtering and projection.
+- Wrote documentation in the `docs` folder to describe requirements, design decisions, and test plans.
+- Used branches and pull requests to integrate changes and keep the main branch stable.
+
+## Testing and Demo Results
+
+The current implementation has been tested with several sample CSV files and interactive command sequences.  
+In classroom demos, the engine successfully loads data, executes inserts, and runs SELECT queries without crashing, showing that the core functionality is stable enough for educational use.
