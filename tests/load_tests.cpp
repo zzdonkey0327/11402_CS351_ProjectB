@@ -27,11 +27,11 @@ void test_TC_LOAD_01_valid_csv() {
     if (storage.has_table()) {
         const Table& table = storage.current_table();
         check(table.name == "students", "table name should be derived from file name");
-        check(table.column_count() == 3, "valid CSV should expose three columns");
+        check(table.column_count() == 4, "valid CSV should expose four columns");
         check(table.row_count() == 3, "valid CSV should expose three rows");
-        check(table.columns.size() == 3 && table.columns[0] == "id" && table.columns[1] == "name" && table.columns[2] == "score",
+        check(table.columns.size() == 4 && table.columns[0] == "id" && table.columns[1] == "name" && table.columns[2] == "score" && table.columns[3] == "grade",
             "header row should be parsed as column names");
-        check(table.rows.size() == 3 && table.rows[0][1] == "Alice" && table.rows[2][2] == "88",
+        check(table.rows.size() == 3 && table.rows[0][1] == "Alice" && table.rows[2][2] == "88" && table.rows[1][3] == "2",
             "data rows should be parsed correctly");
     }
 }

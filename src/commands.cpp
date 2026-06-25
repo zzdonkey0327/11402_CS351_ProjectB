@@ -1,7 +1,9 @@
 #include <iostream>
 
 #include "../include/commands.h"
+#include "../include/insert.h"
 #include "../include/loader.h"
+#include "../include/query.h"
 
 namespace {
 
@@ -44,13 +46,47 @@ void handle_load(const Command& cmd) {
 }
 
 void handle_select(const Command& cmd) {
-    std::cout << "[TODO] SELECT handler - implement query execution.\n";
-    if (!cmd.args.empty()) std::cout << "  Args: " << cmd.args[0] << "\n";
+    if (cmd.args.empty() || cmd.args[0].empty()) {
+        std::cout << "Invalid SELECT syntax. Usage: SELECT * FROM <table> or SELECT col1, col2 FROM <table>\n";
+        return;
+    }
+
+    SelectQuery query;
+    std::string error_message;
+    if (!parse_select_query(cmd.args[0], query, error_message)) {
+        std::cout << error_message << "\n";
+        return;
+    }
+
+    std::string output;
+    if (!execute_select(active_storage(), query, output, error_message)) {
+        std::cout << error_message << "\n";
+        return;
+    }
+
+    std::cout << output;
 }
 
 void handle_insert(const Command& cmd) {
-    std::cout << "[TODO] INSERT handler - implement insert logic.\n";
-    if (!cmd.args.empty()) std::cout << "  Args: " << cmd.args[0] << "\n";
+    if (cmd.args.empty() || cmd.args[0].empty()) {
+        std::cout << "Invalid INSERT syntax. Usage: INSERT INTO <table> (col1, col2) VALUES (val1, val2)\n";
+        return;
+    }
+
+    InsertQuery query;
+    std::string error_message;
+    if (!parse_insert_query(cmd.args[0], query, error_message)) {
+        std::cout << error_message << "\n";
+        return;
+    }
+
+    std::string success_message;
+    if (!execute_insert(active_storage(), query, success_message, error_message)) {
+        std::cout << error_message << "\n";
+        return;
+    }
+
+    std::cout << success_message << "\n";
 }
 
 void handle_unknown(const Command& cmd) {
